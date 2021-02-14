@@ -33,9 +33,10 @@ pipeline {
   }
   agent any
   stages {
-    stage('Building image') {
-        script {
-      steps{
+    stage('Building image') 
+    {
+      steps {
+        script{
           dockerImage = docker.build imageName
         }
       }
@@ -45,7 +46,7 @@ pipeline {
         script {
           docker.withRegistry( 'https://hub.docker.com', registryCredential ) {
             dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
+            dockerImage.push('latest')
 
           }
         }
@@ -54,8 +55,7 @@ pipeline {
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $imagename:$BUILD_NUMBER"
-         sh "docker rmi $imagename:latest"
-
+        sh "docker rmi $imagename:latest"
       }
     }
   }
